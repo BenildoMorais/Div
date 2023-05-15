@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta
+      name="author"
+      content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
+    />
+    <meta name="generator" content="Hugo 0.111.3" />
+    <title>REST APIs com Express JS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik&display=swap"
+      rel="stylesheet"
+    />
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <style></style>
+  </head>
+  <body>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6 mx-auto">
+          <form action="/vendas" method="post">
+            <div class="form-group">
+              <label for="producto">Produto:</label>
+              <input id="produto" class="form-control" name="produto">
+            </div>
+            
+            <div class="form-group">
+              <label for="preco">Preço:</label>
+              <input id="preco" class="form-control" type="number" name="preco">
+            </div>
+            <br/>
+            <div class="form-group">
+              <!-- Este deve ser o botão a ser usado para enviar os dados para o nosso Backend -->
+              <button class="btn btn-primary" type="submit">Enviar</button>
+            </div>
+          </form>
+        </div>
+       
+        <!-- Após recepção da resposta, o elemento abaixo deve ser populado com os dados enviados pelo servidor -->
+        <p id="resposta">
+
+        </p>
+
+        <div class="col-sm-6 mx-auto">
+          <label for="producto">Nome do producto:</label>
+          <p id="producto"></p>
+          <label for="preco">Preço:</label>
+          <p id="preco1"></p>
+        </div>
+
+      </div>
+    </div>
+    
+    <script>
+
+      document.querySelector("button").addEventListener("click", (e) => {
+        e.preventDefault()
+
+          fetch('http://localhost:8080/vendas', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              // Estes dados devem ser os colhidos no formulario
+              produto: document.querySelector("#produto").value,
+              preco: document.querySelector("#preco").value
+            }),
+          }).then(function(res) {
+           // return res.text()
+           return res.json()
+          }).then(function (resJson) {
+            console.log(resJson);
+            document.querySelector("#producto").textContent = resJson.data.produto
+            document.querySelector("#preco1").textContent = resJson.data.preco
+          }).catch(function(e){
+                alert("Preencha todos os campos")
+          })
+      })
+
+      // A função abaixo deve ser adaptada para mostrar os resultados
+    
+  </script>
+  </body>
+  
+</html>
